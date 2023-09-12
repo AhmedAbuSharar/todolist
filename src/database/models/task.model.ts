@@ -8,7 +8,7 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 import { User } from './user.model';
-import { TaskStatus } from 'src/config/enum';
+import { TaskStatus } from 'src/common/enum';
 
 @Table({
   paranoid: true,

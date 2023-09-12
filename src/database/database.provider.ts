@@ -1,4 +1,4 @@
-import { PRODUCTION, TEST, SEQUELIZE } from '../config/constants';
+import { PRODUCTION, TEST, SEQUELIZE } from '../common/constants';
 
 import { Sequelize } from 'sequelize-typescript';
 import { Task, User } from './models';

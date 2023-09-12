@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { SEQUELIZE } from '../../config/constants';
+import { SEQUELIZE } from '../constants';
 import { Sequelize, Transaction } from 'sequelize';
 
 @Injectable()
