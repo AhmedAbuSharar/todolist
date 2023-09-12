@@ -3,7 +3,7 @@ import { PRODUCTION, TEST, SEQUELIZE } from '../common/constants';
 import { Sequelize } from 'sequelize-typescript';
 import { Task, User } from './models';
 
-const { production, test, development } = require('./config/config');
+const { production, test, development } = require('../../config/config');
 
 export const databaseProviders = [
   {
