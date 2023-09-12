@@ -1,7 +1,8 @@
-import { createParamDecorator } from '@nestjs/common';
+import { ExecutionContext, createParamDecorator } from '@nestjs/common';
 
-export const TransactionParam: () => ParameterDecorator = () => {
-  return createParamDecorator((_data, req) => {
+export const TransactionParam = createParamDecorator(
+  (data: unknown, ctx: ExecutionContext) => {
+    const req = ctx.switchToHttp().getRequest();
     return req.transaction;
-  });
-};
+  },
+);

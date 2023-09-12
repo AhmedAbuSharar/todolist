@@ -34,7 +34,7 @@ export class TransactionInterceptor implements NestInterceptor {
       }),
       catchError((error) => {
         transaction.rollback();
-        this.customLogger.error(error)
+        this.customLogger.error(error);
         return throwError(error);
       }),
     );
