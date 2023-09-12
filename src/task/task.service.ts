@@ -7,7 +7,8 @@ import {
 import { TASK_REPOSITORY } from '../common/constants';
 import { Task } from 'src/database/models';
 import { CreateTask, UpdateTask } from './dto';
-import { CustomLogger } from 'src/logger/logger.service';
+import { CustomLogger } from 'src/common/logger/logger.service';
+import { Transaction } from 'sequelize';
 
 @Injectable()
 export class TaskService {
@@ -32,24 +33,32 @@ export class TaskService {
     if (!task) throw new NotFoundException();
     return task;
   }
-  create(createTask: CreateTask, userId: number) {
+  create(createTask: CreateTask, userId: number, transaction: Transaction) {
     this.customLogger.log('create');
-    return this.taskRepository.create({
-      ...createTask,
-      userId,
-    });
+    return this.taskRepository.create(
+      {
+        ...createTask,
+        userId,
+      },
+      { transaction },
+    );
   }
-  async remove(id: number, userId: number) {
+  async remove(id: number, userId: number, transaction: Transaction) {
     this.customLogger.log('remove');
     await this.findOne(id, userId);
-    return this.taskRepository.destroy({ where: { id, userId } });
+    return this.taskRepository.destroy({ where: { id, userId }, transaction });
   }
-  async update(updateTask: UpdateTask, id: number, userId: number) {
+  async update(
+    updateTask: UpdateTask,
+    id: number,
+    userId: number,
+    transaction: Transaction,
+  ) {
     this.customLogger.log('update');
     await this.findOne(id, userId);
     const updatedData = await this.taskRepository.update(
       { ...updateTask },
-      { where: { id, userId }, returning: true },
+      { where: { id, userId }, returning: true, transaction },
     );
     return updatedData;
   }

@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { CustomLogger } from './logger/logger.service';
+import { CustomLogger } from './common/logger/logger.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {

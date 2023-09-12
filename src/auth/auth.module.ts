@@ -12,9 +12,10 @@ import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from './constants';
+import { jwtConstants } from '../common/constants';
 import { User } from 'src/database/models';
 import { USER_REPOSITORY } from 'src/common/constants';
+import { CustomLogger } from 'src/common/logger/logger.service';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { USER_REPOSITORY } from 'src/common/constants';
       provide: USER_REPOSITORY,
       useValue: User,
     },
+    CustomLogger,
   ],
   controllers: [AuthController],
   exports: [AuthService],

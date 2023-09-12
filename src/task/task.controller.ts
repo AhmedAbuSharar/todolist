@@ -12,9 +12,10 @@ import {
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { AuthGuard } from '../auth/auth.guard';
-import { User } from '../auth/decorator';
+import { User, TransactionParam } from '../common/decorator';
 import { CreateTask, UpdateTask } from './dto';
 import { TransactionInterceptor } from 'src/common/interceptors';
+import { Transaction } from 'sequelize';
 
 @UseGuards(AuthGuard)
 @Controller('task')
@@ -28,9 +29,15 @@ export class TaskController {
   findAll(@User('id') userId: number) {
     return this.taskService.findAll(userId);
   }
+
+  @UseInterceptors(TransactionInterceptor)
   @Post()
-  create(@Body() createTask: CreateTask, @User('id') userId: number) {
-    return this.taskService.create(createTask, userId);
+  create(
+    @Body() createTask: CreateTask,
+    @User('id') userId: number,
+    @TransactionParam() transaction: Transaction,
+  ) {
+    return this.taskService.create(createTask, userId, transaction);
   }
 
   @UseInterceptors(TransactionInterceptor)
@@ -39,11 +46,18 @@ export class TaskController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateTask: UpdateTask,
     @User('id') userId: number,
+    @TransactionParam() transaction: Transaction,
   ) {
-    return this.taskService.update(updateTask, id, userId);
+    return this.taskService.update(updateTask, id, userId, transaction);
   }
+
+  @UseInterceptors(TransactionInterceptor)
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number, @User('id') userId: number) {
-    return this.taskService.remove(id, userId);
+  remove(
+    @Param('id', ParseIntPipe) id: number,
+    @User('id') userId: number,
+    @TransactionParam() transaction: Transaction,
+  ) {
+    return this.taskService.remove(id, userId, transaction);
   }
 }

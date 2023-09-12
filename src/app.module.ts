@@ -5,7 +5,9 @@ import { AuthModule } from './auth/auth.module';
 import { TaskModule } from './task/task.module';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
-// import { CustomLogger } from './logger/logger.service';
+import { CustomLogger } from './common/logger/logger.service';
+import { CustomExceptionFilter } from './common/filters/exception.filter';
+import { APP_FILTER } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -15,6 +17,13 @@ import { ConfigModule } from '@nestjs/config';
     TaskModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    CustomLogger,
+    {
+      provide: APP_FILTER,
+      useClass: CustomExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}

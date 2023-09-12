@@ -3,7 +3,7 @@ import { TaskController } from './task.controller';
 import { TaskService } from './task.service';
 import { Task } from 'src/database/models';
 import { TASK_REPOSITORY } from 'src/common/constants';
-import { CustomLogger } from 'src/logger/logger.service';
+import { CustomLogger } from 'src/common/logger/logger.service';
 import { DatabaseModule } from 'src/database/database.module';
 
 @Module({
