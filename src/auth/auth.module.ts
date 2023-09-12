@@ -14,7 +14,7 @@ import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { User } from 'src/database/models';
-import { USER_REPOSITORY } from 'src/config/envConstants';
+import { USER_REPOSITORY } from 'src/config/constants';
 
 @Module({
   imports: [

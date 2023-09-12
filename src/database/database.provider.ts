@@ -1,4 +1,4 @@
-import { PRODUCTION, TEST } from '../config/envConstants';
+import { PRODUCTION, TEST, SEQUELIZE } from '../config/constants';
 
 import { Sequelize } from 'sequelize-typescript';
 import { Task, User } from './models';
@@ -7,7 +7,7 @@ const { production, test, development } = require('./config/config');
 
 export const databaseProviders = [
   {
-    provide: 'sequalize',
+    provide: SEQUELIZE,
     useFactory: async () => {
       let config;
       if (process.env.NODE_ENV === PRODUCTION) {

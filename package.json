@@ -18,8 +18,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "migrate":"./node_modules/.bin/sequelize-cli  db:migrate",
-    "migrate:undo":"./node_modules/.bin/sequelize-cli  db:migrate:undo"
+    "migrate": "./node_modules/.bin/sequelize-cli  db:migrate",
+    "migrate:undo": "./node_modules/.bin/sequelize-cli  db:migrate:undo"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -36,7 +36,8 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "sequelize": "^6.33.0",
-    "sequelize-typescript": "^2.1.5"
+    "sequelize-typescript": "^2.1.5",
+    "winston": "^3.10.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

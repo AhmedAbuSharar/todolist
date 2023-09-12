@@ -8,11 +8,13 @@ import {
   Body,
   Put,
   Delete,
+  UseInterceptors,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { User } from '../auth/decorator';
 import { CreateTask, UpdateTask } from './dto';
+import { TransactionInterceptor } from 'src/common/interceptors';
 
 @UseGuards(AuthGuard)
 @Controller('task')
@@ -30,6 +32,8 @@ export class TaskController {
   create(@Body() createTask: CreateTask, @User('id') userId: number) {
     return this.taskService.create(createTask, userId);
   }
+
+  @UseInterceptors(TransactionInterceptor)
   @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,

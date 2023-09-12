@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { TaskModule } from './task/task.module';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
+// import { CustomLogger } from './logger/logger.service';
 
 @Module({
   imports: [
