@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { CustomLogger } from './common/logger/logger.service';
 import { CustomExceptionFilter } from './common/filters/exception.filter';
 import { APP_FILTER } from '@nestjs/core';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { APP_FILTER } from '@nestjs/core';
     DatabaseModule,
     AuthModule,
     TaskModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [

@@ -1,9 +1,4 @@
-import {
-  Inject,
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { TASK_REPOSITORY } from '../common/constants';
 import { Task } from 'src/database/models';
 import { CreateTask, UpdateTask } from './dto';
@@ -35,9 +30,11 @@ export class TaskService {
   }
   create(createTask: CreateTask, userId: number, transaction: Transaction) {
     this.customLogger.log('create');
+    const deadline = new Date(createTask.deadline);
     return this.taskRepository.create(
       {
         ...createTask,
+        deadline,
         userId,
       },
       { transaction },
@@ -56,6 +53,9 @@ export class TaskService {
   ) {
     this.customLogger.log('update');
     await this.findOne(id, userId);
+    if (updateTask.deadline)
+      updateTask.deadline = new Date(updateTask.deadline);
+
     const updatedData = await this.taskRepository.update(
       { ...updateTask },
       { where: { id, userId }, returning: true, transaction },

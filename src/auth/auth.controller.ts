@@ -9,13 +9,11 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   signIn(@Body() signInDto: SignInDto) {
-    console.log('signin work');
     return this.authService.signIn(signInDto);
   }
 
   @Post('signup')
   signUp(@Body() signUpDto: SignUpDto) {
-    console.log('signup work');
     return this.authService.signUp(signUpDto);
   }
 }

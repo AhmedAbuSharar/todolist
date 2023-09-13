@@ -5,6 +5,7 @@ import { Task } from 'src/database/models';
 import { TASK_REPOSITORY } from 'src/common/constants';
 import { CustomLogger } from 'src/common/logger/logger.service';
 import { DatabaseModule } from 'src/database/database.module';
+import { MyGateway } from './task.gateway';
 
 @Module({
   controllers: [TaskController],
@@ -15,6 +16,7 @@ import { DatabaseModule } from 'src/database/database.module';
       useValue: Task,
     },
     CustomLogger,
+    MyGateway,
   ],
   imports: [DatabaseModule],
 })

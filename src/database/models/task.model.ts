@@ -46,4 +46,9 @@ export class Task extends Model {
     defaultValue: DataType.NOW,
   })
   updatedAt: Date;
+
+  @Column({
+    type: DataType.DATE,
+  })
+  deadline: Date;
 }

@@ -30,7 +30,7 @@ export class AuthService {
     return await this.createToken(user);
   }
   async signUp(signUpDto: SignUpDto) {
-    this.customLogger.log('signIn');
+    this.customLogger.log('signUp');
     const user = await this.userRepository.findOne({
       where: { email: signUpDto.email },
     });
