@@ -3,7 +3,8 @@ import { TASK_REPOSITORY } from '../common/constants';
 import { Task } from 'src/database/models';
 import { CreateTask, UpdateTask } from './dto';
 import { CustomLogger } from 'src/common/logger/logger.service';
-import { Transaction } from 'sequelize';
+import { Op, Transaction } from 'sequelize';
+import { TaskStatus } from 'src/common/enum';
 
 @Injectable()
 export class TaskService {
@@ -61,5 +62,31 @@ export class TaskService {
       { where: { id, userId }, returning: true, transaction },
     );
     return updatedData;
+  }
+  async expired(transaction: Transaction) {
+    this.customLogger.debug('handleCron Called every minute');
+    const currentDate = new Date();
+    const [updatedCount, tasksUpdated] = await this.taskRepository.update(
+      {
+        status: TaskStatus.EXPIRED,
+      },
+      {
+        where: {
+          status: {
+            [Op.notIn]: [TaskStatus.DONE, TaskStatus.EXPIRED],
+          },
+          deadline: {
+            [Op.lt]: currentDate,
+          },
+        },
+        returning: true,
+        transaction,
+      },
+    );
+    this.customLogger.debug(`Updated ${updatedCount} tasks.`);
+    return {
+      updatedCount,
+      tasksUpdated,
+    };
   }
 }

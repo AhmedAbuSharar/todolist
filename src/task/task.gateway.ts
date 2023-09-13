@@ -11,9 +11,6 @@ import { CustomLogger } from 'src/common/logger/logger.service';
 import { Inject, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { TASK_REPOSITORY, jwtConstants } from '../common/constants';
-import { Cron, CronExpression } from '@nestjs/schedule';
-import { TaskStatus } from 'src/common/enum';
-import { Op } from 'sequelize';
 import { Task } from 'src/database/models';
 
 @WebSocketGateway()
@@ -57,29 +54,5 @@ export class MyGateway implements OnGatewayInit, OnGatewayDisconnect {
   async onEvent(client: Socket, message: string) {
     await this.sendAllTasks(client);
     return { data: 'onEvent done' };
-  }
-  @Cron(CronExpression.EVERY_MINUTE)
-  async handleCron() {
-    this.customLogger.debug('handleCron Called every minute');
-    const currentDate = new Date();
-    const [updatedCount, tasksUpdated] = await this.taskRepository.update(
-      {
-        status: TaskStatus.EXPIRED,
-      },
-      {
-        where: {
-          status: {
-            [Op.notIn]: [TaskStatus.DONE, TaskStatus.EXPIRED],
-          },
-          deadline: {
-            [Op.lt]: currentDate,
-          },
-        },
-        returning: true,
-      },
-    );
-
-    if (updatedCount) this.server.emit('tasksExpired', tasksUpdated);
-    this.customLogger.debug(`Updated ${updatedCount} tasks.`);
   }
 }
