@@ -6,6 +6,8 @@ import { TASK_REPOSITORY } from 'src/common/constants';
 import { CustomLogger } from 'src/common/logger/logger.service';
 import { DatabaseModule } from 'src/database/database.module';
 import { MyGateway } from './task.gateway';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { TaskEvent } from './task.event';
 
 @Module({
   controllers: [TaskController],
@@ -17,6 +19,8 @@ import { MyGateway } from './task.gateway';
     },
     CustomLogger,
     MyGateway,
+    EventEmitter2,
+    TaskEvent,
   ],
   imports: [DatabaseModule],
 })

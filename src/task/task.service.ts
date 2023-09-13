@@ -5,12 +5,14 @@ import { CreateTask, UpdateTask } from './dto';
 import { CustomLogger } from 'src/common/logger/logger.service';
 import { Op, Transaction } from 'sequelize';
 import { TaskStatus } from 'src/common/enum';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class TaskService {
   constructor(
     @Inject(TASK_REPOSITORY) private readonly taskRepository: typeof Task,
     private customLogger: CustomLogger,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
   findAll(userId: number) {
     this.customLogger.log('findAll');
@@ -29,10 +31,14 @@ export class TaskService {
     if (!task) throw new NotFoundException();
     return task;
   }
-  create(createTask: CreateTask, userId: number, transaction: Transaction) {
+  async create(
+    createTask: CreateTask,
+    userId: number,
+    transaction: Transaction,
+  ) {
     this.customLogger.log('create');
     const deadline = new Date(createTask.deadline);
-    return this.taskRepository.create(
+    const newTask = await this.taskRepository.create(
       {
         ...createTask,
         deadline,
@@ -40,6 +46,9 @@ export class TaskService {
       },
       { transaction },
     );
+    this.eventEmitter.emit('task.created', newTask);
+
+    return newTask;
   }
   async remove(id: number, userId: number, transaction: Transaction) {
     this.customLogger.log('remove');
@@ -83,6 +92,9 @@ export class TaskService {
         transaction,
       },
     );
+    if (updatedCount > 0) {
+      this.eventEmitter.emit('task.expired', tasksUpdated);
+    }
     this.customLogger.debug(`Updated ${updatedCount} tasks.`);
     return {
       updatedCount,

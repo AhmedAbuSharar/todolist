@@ -10,6 +10,7 @@ import { CustomExceptionFilter } from './common/filters/exception.filter';
 import { APP_FILTER } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
 import config from '../config';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import config from '../config';
     AuthModule,
     TaskModule,
     ScheduleModule.forRoot(),
+    EventEmitterModule.forRoot()
   ],
   controllers: [AppController],
   providers: [
