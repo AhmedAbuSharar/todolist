@@ -5,6 +5,7 @@ export const TASK_REPOSITORY = 'taskRepository';
 export const USER_REPOSITORY = 'userRepository';
 export const SEQUELIZE = 'sequelize';
 export const NODE_ENV = 'NODE_ENV';
+export const DATABASE = 'database';
 export const SALT = 10;
 
 export const jwtConstants = {

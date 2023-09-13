@@ -9,10 +9,11 @@ import { CustomLogger } from './common/logger/logger.service';
 import { CustomExceptionFilter } from './common/filters/exception.filter';
 import { APP_FILTER } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
+import config from '../config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ load: config, isGlobal: true }),
     DatabaseModule,
     AuthModule,
     TaskModule,
